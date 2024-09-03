@@ -1,56 +1,43 @@
-//package ABC_Restaurant.example.ABC_Restaurant.utill;
-//
-//import com.auth0.jwk.Jwk;
-//import com.auth0.jwk.JwkProvider;
-//import com.auth0.jwk.UrlJwkProvider;
-//import com.auth0.jwt.JWT;
-//import com.auth0.jwt.algorithms.Algorithm;
-//import com.auth0.jwt.interfaces.DecodedJWT;
-//import com.ceyentra.lbclslaserver.entity.UserEntity;
-//import com.ceyentra.lbclslaserver.entity.VendorEntity;
-//import com.ceyentra.lbclslaserver.exception.LBCLServiceException;
-//import com.ceyentra.lbclslaserver.service.UserService;
-//import com.ceyentra.lbclslaserver.service.VendorService;
-//import io.jsonwebtoken.Claims;
-//import io.jsonwebtoken.Header;
-//import io.jsonwebtoken.Jwt;
-//import io.jsonwebtoken.Jwts;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.security.authentication.AnonymousAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.stereotype.Component;
-//
-//import java.net.URL;
-//import java.security.interfaces.RSAPublicKey;
-//import java.util.Date;
-//
-//import static com.ceyentra.lbclslaserver.constant.ApplicationConstant.*;
-//
-//@Slf4j
-//@Component
-//public class AccessTokenValidator {
-//
-//    @Autowired
-//    private UserService userService;
-////    private final VendorService vendorService;
-//
-//    @Autowired
-//    private VendorService vendorService;
-//
-//    @Value("${staff-tenant-id}")
-//    private String tenantId;
-//
-//    @Value("${staff-app-id}")
-//    private String appId;
-//
-//    public AccessTokenValidator() {
-////        this.userService = userService;
-////        this.vendorService = vendorService;
-//    }
-//
+package ABC_Restaurant.example.ABC_Restaurant.utill;
+
+import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
+import ABC_Restaurant.example.ABC_Restaurant.service.AdminService;
+
+import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
+
+
+@Slf4j
+@Component
+public class AccessTokenValidator {
+
+    private final UserService userService;
+    private final AdminService adminService;
+    private final ModelMapper modelMapper;
+
+    @Autowired
+    public AccessTokenValidator(UserService userService, AdminService adminService, ModelMapper modelMapper) {
+
+        this.userService = userService;
+        this.adminService = adminService;
+        this.modelMapper = modelMapper;
+    }
+
 //    public boolean validate(String token) {
 //        try {
 //            log.info("Execute method validate");
@@ -130,8 +117,8 @@
 //            throw new LBCLServiceException(OPERATION_FAILED, e.getMessage());
 //        }
 //    }
-//
-//
+
+
 //    public VendorEntity retrieveVendorInformationFromAuthentication(){
 //        log.info("Execute method retrieveVendorInformationFromAuthentication");
 //        try {
@@ -158,8 +145,8 @@
 //            throw new LBCLServiceException(OPERATION_FAILED, e.getMessage());
 //        }
 //    }
-//
-//
+
+
 //    public boolean isAuthenticated() {
 //        log.info("Execute method isAuthenticated");
 //        try {
@@ -168,15 +155,16 @@
 //            if (!(authentication instanceof AnonymousAuthenticationToken)) {
 //                log.info("isAuthenticated : instance of AnonymousAuthenticationToken");
 //                log.info("isAuthenticated : email : " + authentication.getName());
-//                UserEntity user = userService.getUserByEmail(authentication.getName());
-//                log.info("isAuthenticated : user : " + (user!=null));
+//                UserEntity user = userService.findUserByEmail(authentication.getName());
+//                log.info("isAuthenticated : user : " + user);
 //                return user != null;
 //            }
 //            return false;
 //        } catch (Exception e) {
 //            log.error("Method isAuthenticated : " + e.getMessage());
-//            throw new LBCLServiceException(OPERATION_FAILED, e.getMessage());
+////            throw new UserException(UNAUTHORIZED_USER, e.getMessage());
 //        }
+//        return false;
 //    }
-//
-//}
+
+}
