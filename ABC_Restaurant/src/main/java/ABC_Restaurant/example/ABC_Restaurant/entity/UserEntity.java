@@ -1,17 +1,16 @@
 package ABC_Restaurant.example.ABC_Restaurant.entity;
 
+import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "user")
 public class UserEntity {
     @Id
@@ -29,4 +28,6 @@ public class UserEntity {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 }

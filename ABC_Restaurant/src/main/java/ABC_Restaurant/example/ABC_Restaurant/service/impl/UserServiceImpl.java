@@ -1,5 +1,6 @@
 package ABC_Restaurant.example.ABC_Restaurant.service.impl;
 
+import ABC_Restaurant.example.ABC_Restaurant.dto.Request.AddNewUserRequestDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.UserDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.repository.UserRepository;
@@ -21,7 +22,7 @@ import static ABC_Restaurant.example.ABC_Restaurant.constant.ApplicationConstant
 @Log4j2
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserServiceImpl implements UserService {
-    ;
+
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
@@ -47,5 +48,14 @@ public class UserServiceImpl implements UserService {
 //            throw new ExecutionControl.UserException(COMMON_ERROR_CODE, e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public void saveNewUser(AddNewUserRequestDTO addNewUserRequestDTO) {
+        try {
+            System.out.println("hello World");
+        }catch (Exception e){
+            log.error("Function saveUserAndGetAccessToken : {}", e.getMessage());
+            throw e;        }
     }
 }

@@ -2,7 +2,7 @@ package ABC_Restaurant.example.ABC_Restaurant.entity;
 
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity
