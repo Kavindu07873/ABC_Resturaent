@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @Log4j2
-@RequestMapping("v1/user")
+@RequestMapping("v1/users")
 public class UserController {
     private final UserService userService;
 
@@ -25,18 +25,17 @@ public class UserController {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity registerNewUser(@ModelAttribute AddNewUserRequestDTO addNewUserRequestDTO) {
-        System.out.println("Test 1");
+    public ResponseEntity registerNewUser(@RequestBody AddNewUserRequestDTO addNewUserRequestDTO) {
+//        System.out.println("Test 1");
         userService.saveNewUser(addNewUserRequestDTO);
         return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/sign", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity signIn() {
-        System.out.println("Test 1");
-        log.info("Test 1");
-//        userService.saveNewUser(addNewUserRequestDTO);
-        return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity signIn(@RequestBody AddNewUserRequestDTO addNewUserRequestDTO) {
+//        System.out.println("Test 2");
+        userService.userLogin(addNewUserRequestDTO);
+        return new ResponseEntity<>(new CommonResponseDTO(true, "user Successfully login"), HttpStatus.OK);
     }
 
 }

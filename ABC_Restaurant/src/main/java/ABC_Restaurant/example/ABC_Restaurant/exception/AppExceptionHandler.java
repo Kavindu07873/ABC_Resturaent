@@ -19,7 +19,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {AbcRestaurantException.class})
-    public ResponseEntity handleB2BException(AbcRestaurantException ex, WebRequest webRequest) {
+    public ResponseEntity handleABCException(AbcRestaurantException ex, WebRequest webRequest) {
         return new ResponseEntity<>(
                 new ErrorMessageResponseDTO(false, ex.getStatus(), ex.getMessage()), HttpStatus.OK);
     }

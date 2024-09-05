@@ -7,4 +7,6 @@ public interface UserService {
     UserDTO getUserDetailsForLogin(String username);
 
     void saveNewUser(AddNewUserRequestDTO addNewUserRequestDTO);
+
+    void userLogin(AddNewUserRequestDTO addNewUserRequestDTO);
 }

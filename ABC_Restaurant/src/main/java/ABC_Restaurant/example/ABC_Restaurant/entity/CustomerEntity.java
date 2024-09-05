@@ -24,8 +24,6 @@ public class CustomerEntity {
     private String  password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    @Column(length = 255, nullable = false)
-    private String  mobileNumber;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 }

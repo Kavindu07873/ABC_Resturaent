@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class AddNewUserRequestDTO {
-    private String firstName;
+    private String fullName;
     private String email;
     private String password;
     private UserRole userRole;
