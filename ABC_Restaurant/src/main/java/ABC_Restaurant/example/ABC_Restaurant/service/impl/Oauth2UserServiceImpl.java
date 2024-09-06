@@ -28,9 +28,6 @@ import java.util.Optional;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class Oauth2UserServiceImpl implements Oauth2UserService, UserDetailsService {
 
-//    private final HttpServletRequest request;
-//    private final AdminRepository adminRepository;
-//    private final UserRepository userRepository;
 
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
@@ -56,22 +53,15 @@ public class Oauth2UserServiceImpl implements Oauth2UserService, UserDetailsServ
             }
 
             Optional<UserEntity> customer = userRepository.findByEmail(username);
-
+            System.out.println("1");
             if (customer.isPresent() && customer.get().getStatus().equals(UserStatus.ACTIVE)) {
+                System.out.println("2");
                 return new org.springframework.security.core.userdetails.User(
                         customer.get().getEmail(), customer.get().getPassword(),
                         getAuthority(customer.get().getUserRole().name()));
             }
-
-//            Optional<S> staff = staffRepository.findByEmail(username);
-//
-//            if (staff.isPresent() && staff.get().getStatus().equals(CommonStatus.ACTIVE)) {
-//                return new org.springframework.security.core.userdetails.User(
-//                        staff.get().getEmail(), staff.get().getPassword(),
-//                        getAuthority(staff.get().getUserRole().name()));
-//            }
-
-            throw new CustomOauthException("Invalid Credentials.");
+            System.out.println("3");
+            throw new CustomOauthException("Invalid Credentials  I dont know .");
 
         } catch (Exception e) {
             throw e;

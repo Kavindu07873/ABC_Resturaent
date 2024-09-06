@@ -1,6 +1,7 @@
 package ABC_Restaurant.example.ABC_Restaurant.controller;
 
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.AddNewUserRequestDTO;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Request.RegisterRequest;
 import ABC_Restaurant.example.ABC_Restaurant.dto.common.CommonResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -16,7 +17,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @Log4j2
-@RequestMapping("v1/users")
+@RequestMapping("/user")
 public class UserController {
     private final UserService userService;
 
@@ -24,18 +25,28 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity registerNewUser(@RequestBody AddNewUserRequestDTO addNewUserRequestDTO) {
+    @PostMapping(value = "/register")
+    public ResponseEntity registerNewUser(@RequestBody RegisterRequest registerRequest) {
 //        System.out.println("Test 1");
-        userService.saveNewUser(addNewUserRequestDTO);
+        userService.saveNewUser(registerRequest);
         return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity signIn(@RequestBody AddNewUserRequestDTO addNewUserRequestDTO) {
+    public ResponseEntity signIn(@RequestBody RegisterRequest registerRequest) {
 //        System.out.println("Test 2");
-        userService.userLogin(addNewUserRequestDTO);
-        return new ResponseEntity<>(new CommonResponseDTO(true, "user Successfully login"), HttpStatus.OK);
+
+//        try {
+            String token = userService.userLogin(registerRequest);
+
+//            return ResponseEntity.ok().body("Login Successful. Token: " + token);
+            return new ResponseEntity<>(new CommonResponseDTO(true, "user Successfully login",token), HttpStatus.OK);
+
+//        } catch (Exception e) {
+////            return ResponseEntity.badRequest().body(e.getMessage());
+//            return new ResponseEntity<>(new CommonResponseDTO(true, e.getMessage()), HttpStatus.BAD_REQUEST);
+//
+//        }
     }
 
 }

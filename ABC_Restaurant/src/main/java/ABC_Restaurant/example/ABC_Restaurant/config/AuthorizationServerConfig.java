@@ -75,10 +75,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenEnhancer(enhancerChain)
                 .authenticationManager(authenticationManager)
                 .accessTokenConverter(accessTokenConverter())
-                .pathMapping("/oauth/token", "/v1/oauth/token")
+
+//                .pathMapping("/oauth/token", "/v1/oauth/token")
                 .exceptionTranslator(exception -> {
                     if (exception instanceof InvalidGrantException)
-                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomOauthException("Invalid credentials."));
+                        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                .body(new CustomOauthException("Invalid credentials."));
                     else
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomOauthException((exception.getMessage()) != null ?
                                 exception.getMessage() : "Sorry, something went wrong."));

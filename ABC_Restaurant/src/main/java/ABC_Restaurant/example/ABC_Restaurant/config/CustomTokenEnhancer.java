@@ -47,7 +47,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
             UserDTO build = UserDTO.builder()
                     .id(admin.get().getId())
                     .email(admin.get().getEmail())
-                    .firstName(admin.get().getName())
+                    .username(admin.get().getName())
                     .userRole(admin.get().getUserRole())
                     .build();
             additionalInfo.put("user", build);
@@ -59,7 +59,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
             UserDTO build = UserDTO.builder()
                     .id(customer.get().getId())
                     .email(customer.get().getEmail())
-                    .firstName(customer.get().getFirstName())
+                    .username(customer.get().getUsername())
                     .userRole(customer.get().getUserRole())
                     .build();
             additionalInfo.put("user", build);
@@ -71,7 +71,7 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
             UserDTO build = UserDTO.builder()
                     .id(staff.get().getId())
                     .email(staff.get().getEmail())
-                    .firstName(staff.get().getName())
+                    .username(staff.get().getName())
                     .userRole(staff.get().getUserRole())
                     .build();
             additionalInfo.put("user", build);
@@ -79,6 +79,8 @@ public class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
         // set custom claims
         ((DefaultOAuth2AccessToken) oAuth2AccessToken).setAdditionalInformation(additionalInfo);
+        System.out.println("super.enhance(oAuth2AccessToken, oAuth2Authentication) : "+super.enhance(oAuth2AccessToken, oAuth2Authentication));
+
         return super.enhance(oAuth2AccessToken, oAuth2Authentication);
     }
 }

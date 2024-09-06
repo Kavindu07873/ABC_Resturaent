@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class UserDTO {
     private long id;
-    private String  firstName;
+    private String  username;
     private String  lastName;
     private String  email;
     private String  mobileNumber;

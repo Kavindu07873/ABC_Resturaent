@@ -19,7 +19,7 @@ public class OAuth2TokenConstant {
     public static final int REFRESH_TOKEN_VALIDITY_SECONDS = 60 * 60 * 24 * 30;
     public static final String TOKEN_SIGN_IN_KEY = "x+CTL*d#jwE4$D8Sp@CC";
 
-    public static final String STAFF_CLIENT_ID = "VENDOR_CLIENT_ID";
+    public static final String STAFF_CLIENT_ID = "ceyentra";
     public static final String STAFF_CLIENT_SECRET = "ceyentra";
     public static final String STAFF_GRANT_TYPE_PASSWORD = "password";
     public static final String STAFF_AUTHORIZATION_CODE = "authorization_code";

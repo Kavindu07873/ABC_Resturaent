@@ -1,23 +1,25 @@
 package ABC_Restaurant.example.ABC_Restaurant.service.impl;
 
-import ABC_Restaurant.example.ABC_Restaurant.dto.Request.AddNewUserRequestDTO;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Request.RegisterRequest;
 import ABC_Restaurant.example.ABC_Restaurant.dto.UserDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
-import ABC_Restaurant.example.ABC_Restaurant.exception.AbcRestaurantException;
 import ABC_Restaurant.example.ABC_Restaurant.repository.UserRepository;
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
+import java.util.Date;
 import java.util.Optional;
 
-import static ABC_Restaurant.example.ABC_Restaurant.constant.ApplicationConstant.USER_NOT_FOUND;
+import static javax.crypto.Cipher.SECRET_KEY;
 
 @Service
 @Log4j2
@@ -26,10 +28,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -53,20 +57,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveNewUser(AddNewUserRequestDTO addNewUserRequestDTO) {
+    public void saveNewUser(RegisterRequest registerRequest) {
         try {
-            log.info(addNewUserRequestDTO.getFullName());
-            log.info(addNewUserRequestDTO.getEmail());
-            log.info(addNewUserRequestDTO.getPassword());
+            log.info(registerRequest.getUsername());
+            log.info(registerRequest.getEmail());
+            log.info(registerRequest.getPassword());
 
-            Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(addNewUserRequestDTO.getEmail());
-            if (optionalUserEntity.isPresent())
-                throw new AbcRestaurantException(USER_NOT_FOUND, "User Already Available");
+            if (userRepository.existsByUsername(registerRequest.getUsername())) {
+                throw new Exception("Username is already taken.");
+            }
+            if (userRepository.existsByEmail(registerRequest.getEmail())) {
+                throw new Exception("Email is already in use.");
+            }
 
             UserEntity userEntity = new UserEntity();
-            userEntity.setFirstName(addNewUserRequestDTO.getFullName());
-            userEntity.setEmail(addNewUserRequestDTO.getEmail());
-            userEntity.setPassword(addNewUserRequestDTO.getPassword());
+            userEntity.setUsername(registerRequest.getUsername());
+            userEntity.setEmail(registerRequest.getEmail());
+            userEntity.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
             userEntity.setUserRole(UserRole.CUSTOMER);
             userEntity.setStatus(UserStatus.ACTIVE);
 
@@ -75,32 +83,43 @@ public class UserServiceImpl implements UserService {
             System.out.println("hello World");
         } catch (Exception e) {
             log.error("Function saveUserAndGetAccessToken : {}", e.getMessage());
-            throw e;
+            try {
+                throw e;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 
     @Override
-    public void userLogin(AddNewUserRequestDTO addNewUserRequestDTO) {
+    public String userLogin(RegisterRequest registerRequest) {
         try {
-            log.info(addNewUserRequestDTO.getFullName());
-            log.info(addNewUserRequestDTO.getEmail());
-            log.info(addNewUserRequestDTO.getPassword());
+            log.info(registerRequest.getEmail());
+            log.info(registerRequest.getPassword());
 
-            Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(addNewUserRequestDTO.getEmail());
-            if (!optionalUserEntity.isPresent())
-                throw new AbcRestaurantException(USER_NOT_FOUND, "User Not Available");
+            UserEntity user = userRepository.findByEmail(registerRequest.getEmail())
+                    .orElseThrow(() -> new Exception("User not found"));
 
-            UserEntity userEntity = optionalUserEntity.get();
-            if(Objects.equals(userEntity.getPassword(), addNewUserRequestDTO.getPassword())){
-
-            }else {
-                throw new AbcRestaurantException(USER_NOT_FOUND, "Password Incorrect ");
+            if (!passwordEncoder.matches(registerRequest.getPassword(), registerRequest.getPassword())) {
+                throw new Exception("Invalid credentials");
             }
-
-            System.out.println("hello World");
+            // Generate JWT Token
+            return generateToken(user);
         } catch (Exception e) {
 //            log.error("Function saveUserAndGetAccessToken : {}", e.getMessage());
-            throw e;
+            try {
+                throw e;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
+    }
+    private String generateToken(UserEntity user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 hours validity
+                .signWith(SignatureAlgorithm.HS256, String.valueOf(SECRET_KEY))
+                .compact();
     }
 }

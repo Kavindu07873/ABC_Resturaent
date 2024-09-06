@@ -1,4 +1,4 @@
-package ABC_Restaurant.example.ABC_Restaurant.dto.Request;
+package ABC_Restaurant.example.ABC_Restaurant.dto.Response;
 
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
 import lombok.*;
@@ -8,12 +8,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class AddNewUserRequestDTO {
+public class CustomerResponseDTO {
     private String fullName;
-    private String salary;
-    private String address;
-    private String name;
     private String email;
     private String password;
     private UserRole userRole;
+
 }

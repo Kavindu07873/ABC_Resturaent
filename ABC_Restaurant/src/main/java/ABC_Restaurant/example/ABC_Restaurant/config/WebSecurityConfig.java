@@ -70,6 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        System.out.println(bean);
         return bean;
     }
 

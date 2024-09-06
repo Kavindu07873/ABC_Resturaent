@@ -19,9 +19,9 @@ public class CustomerEntity {
     @Column(length = 255)
     private String  name;
     @Column(length = 255, nullable = false, unique = true)
-    private String  email;
+    private String address;
     @Column(length = 255, nullable = false)
-    private String  password;
+    private String salary;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
     @Enumerated(EnumType.STRING)
