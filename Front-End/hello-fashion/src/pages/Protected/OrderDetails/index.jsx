@@ -11,7 +11,7 @@ const OrderDetails = () => {
   const {orderId} = useParams();
   const dispatch = useDispatch();
   const {isMutation, orderDetails} = useSelector((state) => state.orders);
-  console.log(orderDetails);
+  // console.log(orderDetails);
   useEffect(() => {
     if (isMutation.success) {
       dispatch(getOrderDetails(orderId));

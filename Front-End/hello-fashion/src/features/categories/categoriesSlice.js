@@ -30,9 +30,9 @@ export const categoriesSlice = createSlice({
       .addCase(getAllCategories.fulfilled, (state, action) => {
         state.allCategories.loading = false;
         state.allCategories.error = false;
-        state.allCategories.categories = action.payload.data.docs;
-        state.allCategories.results = action.payload.results;
-        state.allCategories.totalNumOfDocs = action.payload.totalNumOfDocs;
+        state.allCategories.categories = action.payload.body.content;
+        state.allCategories.results = action.payload.body.content;
+        state.allCategories.totalNumOfDocs = action.payload.body.numberOfElements;
         state.allCategories.paginationStatus = action.payload.paginationStatus;
       })
       .addCase(getAllCategories.rejected, (state, action) => {

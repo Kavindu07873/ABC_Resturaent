@@ -11,25 +11,15 @@ import {
   getAllUsers,
 } from "./userServices";
 
-// const initialState = {
-//   isMutation: {success: false},
-//   isMutationAdmin: {success: false},
-//   loggedStatus: {},
-//   isLoggedIn: localStorage.getItem("isLoggedIn")
-//     ? JSON.parse(localStorage.getItem("isLoggedIn"))
-//     : null,
-//   userProfile: {user: null},
-//   allUsers: {users: []},
-// };
 const initialState = {
-  isMutation: { success: false },
-  isMutationAdmin: { success: false },
-  loggedStatus: { loading: false, token: null, error: null },
+  isMutation: {success: false},
+  isMutationAdmin: {success: false},
+  loggedStatus: {},
   isLoggedIn: localStorage.getItem("isLoggedIn")
-      ? JSON.parse(localStorage.getItem("isLoggedIn"))
-      : null,
-  userProfile: { user: null, loading: false, error: null },
-  allUsers: { users: [], loading: false, error: null, results: null, totalNumOfDocs: null, paginationStatus: null },
+    ? JSON.parse(localStorage.getItem("isLoggedIn"))
+    : null,
+  userProfile: {user: null},
+  allUsers: {users: []},
 };
 
 
@@ -89,7 +79,10 @@ export const userSlice = createSlice({
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.userProfile.loading = false;
         state.userProfile.error = false;
-        state.userProfile.user = action.payload.data.doc;
+        console.log("----------------------------------------")
+        console.log("action.payload {} ",action.payload)
+        console.log("----------------------------------------")
+        state.userProfile.user = action.payload.body;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
         state.userProfile.loading = false;
@@ -124,6 +117,9 @@ export const userSlice = createSlice({
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.allUsers.loading = false;
         state.allUsers.error = false;
+        console.log("----------=============------------------------------")
+        console.log("action.payload {} ",action.payload)
+        console.log("-------------=======================---------------------------")
         state.allUsers.users = action.payload.data.docs;
         state.allUsers.results = action.payload.results;
         state.allUsers.totalNumOfDocs = action.payload.totalNumOfDocs;

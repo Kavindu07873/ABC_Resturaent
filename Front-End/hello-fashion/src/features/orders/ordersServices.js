@@ -40,7 +40,7 @@ export const createCardOrder = createAsyncThunk(
   async (body, {rejectWithValue}) => {
     try {
       const res = await usePostData(`/orders/checkout-session`, body);
-      console.log(res);
+      // console.log(res);
       return res;
     } catch (error) {
       // console.log("ERROR" + error);

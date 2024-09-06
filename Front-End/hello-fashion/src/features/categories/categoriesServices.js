@@ -6,29 +6,56 @@ import {usePostDataWithImg} from "../../common/hooks/api/usePostData";
 import {useUpdateDataWithImg} from "../../common/hooks/api/useUpdateData";
 
 //_____________________GET_ALL_CATEGORIES____________________//
+// export const getAllCategories = createAsyncThunk(
+//   "categories/getAllCategories",
+//   async ({limit, page}, {rejectWithValue}) => {
+//     try {
+//       const res = await useGetData(
+//         `/categories${limit ? `?limit=${limit}` : ""}${
+//           page ? `&page=${page}` : ""
+//         }`
+//       );
+//       return res;
+//     } catch (error) {
+//       // console.log(error);
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         (error.response && error.response.data && error.response.data.errors) ||
+//         error.message;
+//       // console.log(message);
+//       return rejectWithValue(message);
+//     }
+//   }
+// );
+
 export const getAllCategories = createAsyncThunk(
   "categories/getAllCategories",
-  async ({limit, page}, {rejectWithValue}) => {
+  async ({ size = 10, page = 0 }, { rejectWithValue }) => {
     try {
-      const res = await useGetData(
-        `/categories${limit ? `?limit=${limit}` : ""}${
-          page ? `&page=${page}` : ""
-        }`
-      );
+      // Construct query string for pagination
+      const queryParams = new URLSearchParams();
+      queryParams.append("size", size); // 'size' is equivalent to 'limit'
+      queryParams.append("page", page);
+
+      // Send request with query params
+      const res = await useGetData(`/categories?${queryParams.toString()}`);
+
       return res;
     } catch (error) {
-      // console.log(error);
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         (error.response && error.response.data && error.response.data.errors) ||
         error.message;
-      // console.log(message);
       return rejectWithValue(message);
     }
   }
 );
+
+
 //_____________________GET_CATEGORY_DETAILS____________________//
 export const getCategoryDetails = createAsyncThunk(
   "categories/getCategoryDetails",

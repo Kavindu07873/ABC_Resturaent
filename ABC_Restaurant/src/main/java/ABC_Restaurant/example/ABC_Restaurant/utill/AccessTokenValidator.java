@@ -1,6 +1,7 @@
 package ABC_Restaurant.example.ABC_Restaurant.utill;
 
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
+import ABC_Restaurant.example.ABC_Restaurant.exception.AbcRestaurantException;
 import ABC_Restaurant.example.ABC_Restaurant.service.AdminService;
 
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
+
+import static ABC_Restaurant.example.ABC_Restaurant.constant.ApplicationConstant.*;
 
 
 @Slf4j
@@ -99,24 +102,24 @@ public class AccessTokenValidator {
 //        return null;
 //    }
 //
-//    public UserEntity retrieveUserInformationFromAuthentication() {
-//        log.info("Execute method retrieveUserInformationFromAuthentication");
-//        try {
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            if (!(authentication instanceof AnonymousAuthenticationToken)) {
-//                UserEntity user = userService.getUserByEmail(authentication.getName());
-//
-//                if (user == null) {
-//                    throw new LBCLServiceException(USER_NOT_FOUND, "this user is not registered yet");
-//                }
-//                return user;
-//            }
-//            throw new LBCLServiceException(RESOURCE_NOT_FOUND, "Can't find user details from token");
-//        } catch (Exception e) {
-//            log.error("Method retrieveB2BUserInformationFromAuthentication : " + e.getMessage());
-//            throw new LBCLServiceException(OPERATION_FAILED, e.getMessage());
-//        }
-//    }
+    public UserEntity retrieveUserInformationFromAuthentication() {
+        log.info("Execute method retrieveUserInformationFromAuthentication");
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (!(authentication instanceof AnonymousAuthenticationToken)) {
+                UserEntity user = userService.getUserDetailsForLogin(authentication.getName());
+
+                if (user == null) {
+                    throw new AbcRestaurantException(USER_NOT_FOUND, "this user is not registered yet");
+                }
+                return user;
+            }
+            throw new AbcRestaurantException(RESOURCE_NOT_FOUND, "Can't find user details from token");
+        } catch (Exception e) {
+            log.error("Method retrieveB2BUserInformationFromAuthentication : " + e.getMessage());
+            throw new AbcRestaurantException(OPERATION_FAILED, e.getMessage());
+        }
+    }
 
 
 //    public VendorEntity retrieveVendorInformationFromAuthentication(){

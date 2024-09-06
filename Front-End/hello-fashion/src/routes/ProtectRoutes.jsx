@@ -9,7 +9,7 @@ const ProtectRoutes = ({isAdmin, children}) => {
     return;
   }
   if (userProfile.loading === false) {
-    if (isAdmin && userProfile?.user?.role !== "admin") {
+    if (isAdmin && userProfile?.user?.userRole !== "ADMIN") {
       return <Navigate to="/" replace />;
     }
     return children ? children : <Outlet />;

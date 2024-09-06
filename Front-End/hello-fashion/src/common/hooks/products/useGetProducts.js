@@ -78,7 +78,7 @@ const useGetProducts = (limit = 8) => {
         .map((value) => "category=" + value)
         .join("&");
       setCategoryQueryParams("&" + buildQueryParams);
-      console.log("&" + buildQueryParams);
+      // console.log("&" + buildQueryParams);
     } else {
       setCategoryQueryParams("");
     }

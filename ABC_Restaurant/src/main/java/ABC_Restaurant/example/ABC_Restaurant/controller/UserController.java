@@ -2,11 +2,14 @@ package ABC_Restaurant.example.ABC_Restaurant.controller;
 
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.AddNewUserRequestDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.RegisterRequest;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CustomerResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.common.CommonResponseDTO;
+import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +30,7 @@ public class UserController {
 
     @PostMapping(value = "/register")
     public ResponseEntity registerNewUser(@RequestBody RegisterRequest registerRequest) {
-//        System.out.println("Test 1");
+        System.out.println("Test 1");
         userService.saveNewUser(registerRequest);
         return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
     }
@@ -49,4 +52,11 @@ public class UserController {
 //        }
     }
 
+
+    @GetMapping(value = "/my-profile", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity findAllUser() {
+        System.out.println("my profile");
+        UserEntity userEntity = userService.findProfile();
+        return new ResponseEntity<>(new CommonResponseDTO(true,userEntity ), HttpStatus.OK);
+    }
 }

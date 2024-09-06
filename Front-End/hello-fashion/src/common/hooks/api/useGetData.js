@@ -10,6 +10,6 @@ export const useGetDataProtected = async (url) => {
   const config = {
     headers: {Authorization: `Bearer ${token}`},
   };
-  const res = await axiosBaseUrl.get(url, config);
+  const res = await axiosBaseUrl.get(url,config);
   return res.data;
 };

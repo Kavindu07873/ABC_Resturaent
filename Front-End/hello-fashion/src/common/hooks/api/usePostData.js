@@ -26,13 +26,14 @@ export const usePostDataWithoutAuth = async (url, data) => {
   return response;
 };
 
+
 export const usePostDataWithBasicAuth = async (url, data) => {
   const clientId = "ceyentra";
   const clientSecret = "ceyentra";
 
   // Encode credentials and create the Authorization header
   const authHeader = `Basic ${encodeCredentials(clientId, clientSecret)}`;
-  console.log(`Encoded credentials: ${encodeCredentials(clientId, clientSecret)}`);
+  // console.log(`Encoded credentials: ${encodeCredentials(clientId, clientSecret)}`);
 
   const response = await axiosBaseUrl.post(url, data, {
     headers: {

@@ -18,6 +18,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../features/user/userSlice";
 import useUserCart from "../../common/hooks/cart/useUserCart";
 
+
+
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
@@ -25,6 +27,8 @@ const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {userCart} = useUserCart();
+
+    console.log("userProfile {} ",userProfile)
 
     return (
         <header className="bg-light">
@@ -79,7 +83,7 @@ const Header = () => {
                                             <DropdownItem onClick={() => navigate("/profile")}>
                                                 Profile
                                             </DropdownItem>
-                                            {userProfile.user?.role === "admin" && (
+                                            {userProfile.user?.userRole === "ADMIN" && (
                                                 <>
                                                     <DropdownItem divider />
                                                     <DropdownItem

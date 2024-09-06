@@ -44,7 +44,7 @@ export const login = createAsyncThunk(
   "user/login",
   async (body, {rejectWithValue}) => {
     try {
-      const {data} = await usePostDataWithBasicAuth("api/oauth/token", body);
+      const {data} = await usePostDataWithBasicAuth("oauth/token", body);
       pushNotification("Login Successfully", "success");
       return data;
     } catch (error) {
@@ -71,7 +71,7 @@ export const getUserProfile = createAsyncThunk(
   "user/getUserProfile",
   async (_, {rejectWithValue}) => {
     try {
-      const res = await useGetDataProtected("/users/my-profile");
+      const res = await useGetDataProtected("/user/my-profile");
       return res;
     } catch (error) {
       // console.log(error);
@@ -91,7 +91,7 @@ export const updateUserProfile = createAsyncThunk(
   "user/updateUserProfile",
   async (body, {rejectWithValue}) => {
     try {
-      const res = await useUpdateDataWithImg(`/users/my-profile`, body);
+      const res = await useUpdateDataWithImg(`/user/my-profile`, body);
       pushNotification("Profile Updated Successfully", "success");
       // console.log(res);
       return res;

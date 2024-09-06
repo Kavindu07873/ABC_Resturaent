@@ -5,12 +5,16 @@ import ABC_Restaurant.example.ABC_Restaurant.dto.UserDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
+import ABC_Restaurant.example.ABC_Restaurant.exception.AbcRestaurantException;
 import ABC_Restaurant.example.ABC_Restaurant.repository.UserRepository;
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
+import ABC_Restaurant.example.ABC_Restaurant.utill.AccessTokenValidator;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.Optional;
 
+import static ABC_Restaurant.example.ABC_Restaurant.constant.ApplicationConstant.USER_NOT_FOUND;
 import static javax.crypto.Cipher.SECRET_KEY;
 
 @Service
@@ -26,29 +31,35 @@ import static javax.crypto.Cipher.SECRET_KEY;
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class UserServiceImpl implements UserService {
 
+
+
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+    private final AccessTokenValidator accessTokenValidator;
+
+    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, @Lazy AccessTokenValidator accessTokenValidator) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
+        this.accessTokenValidator = accessTokenValidator;
     }
 
+
     @Override
-    public UserDTO getUserDetailsForLogin(String email) {
+    public UserEntity getUserDetailsForLogin(String email) {
         log.info("Start function getUserDetailsForLogin @param email : {}", email);
         try {
             Optional<UserEntity> userEntityOptional = userRepository.findByEmail(email);
-//            if (!userEntityOptional.isPresent())
-//                throw new ExecutionControl.UserException(USER_NOT_FOUND, "User not found for the given email");
+            if (!userEntityOptional.isPresent())
+                throw new AbcRestaurantException(USER_NOT_FOUND, "User not found for the given email");
             UserEntity userEntity = userEntityOptional.get();
 
-            UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
-            userDTO.setPassword(null);
+//            UserDTO userDTO = modelMapper.map(userEntity, UserDTO.class);
+//            userDTO.setPassword(null);
 
-            return userDTO;
+            return userEntity;
         } catch (Exception e) {
             log.error("Function getUserDetailsForLogin : {}", e.getMessage(), e);
 //            throw new ExecutionControl.UserException(COMMON_ERROR_CODE, e.getMessage());
@@ -114,6 +125,18 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+    @Override
+    public UserEntity findProfile() {
+        System.out.println("findProfile");
+        try {
+            return accessTokenValidator.retrieveUserInformationFromAuthentication();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
+    }
+
     private String generateToken(UserEntity user) {
         return Jwts.builder()
                 .setSubject(user.getUsername())
