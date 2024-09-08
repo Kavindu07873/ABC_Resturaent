@@ -5,6 +5,8 @@ import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -30,4 +32,7 @@ public class UserEntity {
     private UserStatus status;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<CartEntity> cartEntityList;
 }

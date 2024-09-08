@@ -13,14 +13,13 @@ const ProductCard = ({
     price,
     discount,
     quantityInStock,
-    _id,
+    id,
     description
   },
 }) => {
-
   return (
     <LinkContainer
-      to={`/products/${_id}`}
+      to={`/products/${id}`}
       className={"mx-auto rounded"}
       style={{
         maxWidth: "230px",
@@ -46,7 +45,7 @@ const ProductCard = ({
             }}
             name={name}
             description={description}
-            _id= {_id}
+            id= {id}
           />
         </div>
 

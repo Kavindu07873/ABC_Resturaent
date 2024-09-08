@@ -3,6 +3,8 @@ package ABC_Restaurant.example.ABC_Restaurant.entity;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -31,4 +33,6 @@ public class ProductEntity {
     @JoinColumn(name = "fk_Category_id")
     private CategoryEntity categoryEntity;
 
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<CartEntity> cartEntityList;
 }
