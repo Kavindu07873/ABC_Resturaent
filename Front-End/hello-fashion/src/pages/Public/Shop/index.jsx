@@ -19,7 +19,7 @@ const Shop = () => {
     handlePagination,
     limit,
   } = useGetProducts();
-
+console.log("allProducts  :  ",allProducts)
   return (
     <>
       <PageHelmet title={"Shop"} />

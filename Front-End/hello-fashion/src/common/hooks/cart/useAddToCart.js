@@ -28,28 +28,29 @@ const useAddToCart = (product) => {
   };
 
   const handleAddToCart = () => {
-    if (product.colors.length !== 0) {
-      if (!color) {
-        pushNotification("Please select a color", "error");
-        return;
-      }
-    } else {
-      setColor("");
-    }
-    if (product.size.length !== 0) {
-      if (!size) {
-        pushNotification("Please select a size", "error");
-        return;
-      }
-    } else {
-      setSize("");
-    }
+
+    console.log("handleAddToCart : ")
+
+    // if (product.colors.length !== 0) {
+    //   if (!color) {
+    //     pushNotification("Please select a color", "error");
+    //     return;
+    //   }
+    // } else {
+    //   setColor("");
+    // }
+    // if (product.size.length !== 0) {
+    //   if (!size) {
+    //     pushNotification("Please select a size", "error");
+    //     return;
+    //   }
+    // } else {
+    //   setSize("");
+    // }
 
     dispatch(
       addToCart({
-        productId: product?._id,
-        color,
-        size,
+        productId: product?.id,
         quantity,
       })
     );

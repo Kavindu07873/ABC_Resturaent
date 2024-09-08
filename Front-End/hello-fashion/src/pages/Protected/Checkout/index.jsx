@@ -76,7 +76,7 @@ const Checkout = () => {
     localStorage.setItem("shippingAddress", JSON.stringify(address));
     dispatch(createShippingAddress(address));
     //Handle-User-Cart
-    if (userCart.cart?.cartItems.length < 1) {
+    if (userCart.cart.length < 1) {
       pushNotification("Your cart is empty", "error");
       setTimeout(() => {
         navigate("/cart");
@@ -92,14 +92,14 @@ const Checkout = () => {
     if (paymentMethod === "cash") {
       dispatch(
         createCashOrder({
-          cartId: userCart.cart?._id,
+          cartId: userCart.cart?.id,
           body: {shippingAddress: address},
         })
       );
     } else if (paymentMethod === "card") {
       dispatch(
         createCardOrder({
-          cartId: userCart.cart?._id,
+          cartId: userCart.cart?.id,
           shippingAddress: address,
         })
       );
@@ -122,7 +122,13 @@ const Checkout = () => {
       }
     }
   }, [isMutation, dispatch, navigate, sessionUrl]);
-
+ 
+  const payment = Array.isArray(userCart.cart)
+  ? userCart.cart.reduce((total, item) => {
+      return item?.totalPrice > 0 ? total + item.totalPrice : total;
+    }, 0)
+  : 0;
+  console.log("payment : ",payment)
   return (
     <>
       <PageHelmet title={"Checkout"} />
@@ -200,7 +206,7 @@ const Checkout = () => {
                       : "black",
                   }}
                 >
-                  Cart Subtotal : Rs.{userCart.cart?.totalPrice}
+                  Cart Subtotal : Rs.{payment}
                 </span>
                 {userCart.cart?.totalPriceAfterCouponDiscount > 0 && (
                   <span>

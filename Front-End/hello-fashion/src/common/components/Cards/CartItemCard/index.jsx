@@ -8,9 +8,10 @@ import {
   updateCartItemQty,
 } from "../../../../features/cart/cartServices";
 
-const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
+const CartItemCard = ({item: {color, totalPrice, product, quantity, size, id}}) => {
   const dispatch = useDispatch();
-
+  size =product?.description;
+  console.log("CartItemCard   : ",totalPrice)
   return (
     <div style={{position: "relative"}}>
       {/* Remove Icon */}
@@ -26,7 +27,7 @@ const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
           justifyContent: "center",
           padding: "5px",
         }}
-        onClick={() => dispatch(removeFromCart(_id))}
+        onClick={() => dispatch(removeFromCart(id))}
       >
         <BsTrash size={20} color={"white"} />
       </div>
@@ -48,7 +49,7 @@ const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
         {/* Name */}
         <Col className="text-center">
           <LinkContainer
-            to={`/products/${product?._id}`}
+            to={`/products/${product?.id}`}
             style={{cursor: "pointer"}}
           >
             <h6>{product?.name}</h6>
@@ -58,27 +59,9 @@ const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
         <Col className="text-center">
           <div className="d-flex align-items-center justify-content-around flex-column gap-2">
             {/* Color */}
-            {color && (
-              <div
-                style={{
-                  width: "30px",
-                  height: "30px",
-                  background: `${color}`,
-                  borderRadius: "100%",
-                }}
-              />
-            )}
-
             {/* Size */}
             {size && (
               <div
-                style={{
-                  fontSize: "12px",
-                  padding: "10px",
-                  border: "1px solid black",
-                  background: "black",
-                  color: "white",
-                }}
               >
                 {size}
               </div>
@@ -95,7 +78,7 @@ const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
               value={quantity}
               onChange={(e) =>
                 dispatch(
-                  updateCartItemQty({cartItemId: _id, quantity: e.target.value})
+                  updateCartItemQty({cartItemId: id, quantity: e.target.value})
                 )
               }
             >
@@ -108,7 +91,7 @@ const CartItemCard = ({item: {color, price, product, quantity, size, _id}}) => {
           )}
         </Col>
         <Col className="text-center">
-          {price && <span style={{color: "red"}}>Rs. {price}</span>}
+          {totalPrice && <span style={{color: "red"}}>Rs. {totalPrice}</span>}
         </Col>
       </Row>
     </div>

@@ -26,7 +26,8 @@ export const cartSlice = createSlice({
       .addCase(getUserCart.fulfilled, (state, action) => {
         state.userCart.loading = false;
         state.userCart.error = false;
-        state.userCart.cart = action.payload.data;
+        console.log("action.payload.data :",action.payload.body)
+        state.userCart.cart = action.payload.body;
       })
       .addCase(getUserCart.rejected, (state, action) => {
         state.userCart.loading = false;
