@@ -10,6 +10,7 @@ export const createCashOrder = createAsyncThunk(
   "orders/createCashOrder",
   async ({cartId, body}, {rejectWithValue}) => {
     try {
+      const cartId =1;
       const res = await usePostData(`/orders/${cartId}`, body);
       pushNotification("Order Created Successfully", "success");
       // console.log(res);
