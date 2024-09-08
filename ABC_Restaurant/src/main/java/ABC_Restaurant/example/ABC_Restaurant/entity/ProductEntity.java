@@ -17,7 +17,18 @@ public class ProductEntity {
     private long id;
     @Column(length = 255)
     private String  mealName;
-    @Column(length = 255, nullable = false, unique = true)
+    @Column(length = 3000)
     private String  mealType;
+    @Column(length = 3000)
     private String  description;
+    @Column(length = 3000)
+    private String image;
+
+    private double price;
+    private int quantityInStock;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_Category_id")
+    private CategoryEntity categoryEntity;
+
 }

@@ -28,8 +28,6 @@ const Header = () => {
     const navigate = useNavigate();
     const {userCart} = useUserCart();
 
-    console.log("userProfile {} ",userProfile)
-
     return (
         <header className="bg-light">
             <Container>

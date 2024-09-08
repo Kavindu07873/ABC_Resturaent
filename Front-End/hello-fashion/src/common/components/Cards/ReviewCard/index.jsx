@@ -43,7 +43,7 @@ const ReviewCard = ({rev}) => {
     toggleUpdateReviewModal,
     handleSubmitUpdateReview,
   } = UseMutateReviews();
-  // console.log(userProfile);
+
   return (
     <div className="d-flex p-2 rounded mb-2">
       {/* user_image */}

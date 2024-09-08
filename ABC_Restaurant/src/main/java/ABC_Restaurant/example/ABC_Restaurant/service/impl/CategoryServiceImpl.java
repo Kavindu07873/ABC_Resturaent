@@ -2,6 +2,7 @@ package ABC_Restaurant.example.ABC_Restaurant.service.impl;
 
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.CategoryRequestDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CategoryResponseDTO;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CustomerResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.CategoryEntity;
 import ABC_Restaurant.example.ABC_Restaurant.entity.CustomerEntity;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
@@ -23,8 +24,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static ABC_Restaurant.example.ABC_Restaurant.constant.ApplicationConstant.*;
 
@@ -59,11 +62,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<CategoryResponseDTO> loadAllCategory(int page, int size) {
+    public Page<CategoryResponseDTO> loadAllCategory(int page, int size ) {
         try {
             if (page < 0 || size < 0)
                 throw new AbcRestaurantException(INVALID_ENTERED, "The page is not in a valid format.. ");
             Pageable pageable = PageRequest.of(page, size);
+
             Page<CategoryEntity> categoryEntities = categoryRepository.findAll(pageable);
             // Correct the mapping logic here
             Page<CategoryResponseDTO> categoryResponseDTOS = categoryEntities.map(categoryEntity ->
@@ -75,6 +79,40 @@ public class CategoryServiceImpl implements CategoryService {
             throw e;
         }
     }
+
+    @Override
+    public List<CategoryResponseDTO> loadAllCategoryList() {
+        try {
+            List<CategoryEntity> categoryEntities = categoryRepository.findAll();
+
+            // Use streams to map entities to DTOs
+            List<CategoryResponseDTO> categoryResponseDTOS = categoryEntities.stream()
+                    .map(categoryEntity -> modelMapper.map(categoryEntity, CategoryResponseDTO.class))
+                    .collect(Collectors.toList());
+
+            return categoryResponseDTOS;
+        } catch (Exception e) {
+            log.error("Function loadAllCategoryList : {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public CategoryResponseDTO findCategoryId(long categoryId) {
+        try {
+            Optional<CategoryEntity> categoryEntity = categoryRepository.findById(categoryId);
+
+            // Using Optional.map() to convert the entity to a DTO
+            return categoryEntity.map(entity -> modelMapper.map(entity, CategoryResponseDTO.class))
+                    .orElseThrow(() -> new AbcRestaurantException(INTERNAL_SERVER_ERROR,"Category not found with ID: " + categoryId));
+
+        } catch (Exception e) {
+            log.error("Error in findCategoryId: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+
 
     private String saveAttachment(CategoryRequestDTO categoryRequestDTO) {
         try {

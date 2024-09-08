@@ -3,19 +3,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {getAllCategories} from "../../../features/categories/categoriesServices";
 import {resetMutationResult} from "../../../features/categories/categoriesSlice";
 
-const useGetCategories = (limit, page) => {
+const useGetCategories = () => {
   const dispatch = useDispatch();
   const {allCategories, isMutation} = useSelector((state) => state.categories);
 
   useEffect(() => {
     if (isMutation.success) {
-      dispatch(getAllCategories({limit, page}));
+      dispatch(getAllCategories()); // Call without pagination parameters
       dispatch(resetMutationResult());
     } else {
-      dispatch(getAllCategories({limit, page}));
+      dispatch(getAllCategories()); // Call without pagination parameters
     }
-  }, [dispatch, isMutation.success, limit, page]);
+  }, [dispatch, isMutation.success]);
 
   return {allCategories, isMutation};
 };
+
 export default useGetCategories;

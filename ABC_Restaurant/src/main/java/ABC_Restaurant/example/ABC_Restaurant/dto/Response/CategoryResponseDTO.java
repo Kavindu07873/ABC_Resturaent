@@ -1,7 +1,6 @@
 package ABC_Restaurant.example.ABC_Restaurant.dto.Response;
 
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -9,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @ToString
 public class CategoryResponseDTO {
+    private long id;
     private String  name;
     private String description;
     private String image;

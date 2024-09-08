@@ -30,10 +30,10 @@ export const categoriesSlice = createSlice({
       .addCase(getAllCategories.fulfilled, (state, action) => {
         state.allCategories.loading = false;
         state.allCategories.error = false;
-        state.allCategories.categories = action.payload.body.content;
-        state.allCategories.results = action.payload.body.content;
-        state.allCategories.totalNumOfDocs = action.payload.body.numberOfElements;
-        state.allCategories.paginationStatus = action.payload.paginationStatus;
+        state.allCategories.categories = action.payload.body;
+        state.allCategories.results = action.payload.body;
+        // state.allCategories.totalNumOfDocs = action.payload.body.numberOfElements;
+        // state.allCategories.paginationStatus = action.payload.paginationStatus;
       })
       .addCase(getAllCategories.rejected, (state, action) => {
         state.allCategories.loading = false;
@@ -46,7 +46,7 @@ export const categoriesSlice = createSlice({
       .addCase(getCategoryDetails.fulfilled, (state, action) => {
         state.categoryDetails.loading = false;
         state.categoryDetails.error = false;
-        state.categoryDetails.category = action.payload.data.doc;
+        state.categoryDetails.category = action.payload.body;
       })
       .addCase(getCategoryDetails.rejected, (state, action) => {
         state.categoryDetails.loading = false;

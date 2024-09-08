@@ -104,7 +104,7 @@ const Categories = () => {
                         <Link to={`/categories/${item._id}`}>{item._id}</Link>
                       </td>
                       <td style={{fontSize: "13px", fontStyle: "italic"}}>
-                        {item.name.toUpperCase()}
+                      {item.name ? item.name.toUpperCase() : 'N/A'}
                       </td>
                       <td>
                         <img

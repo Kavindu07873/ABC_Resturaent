@@ -49,7 +49,9 @@ const ProductInfoSection = () => {
     handleAddToCart,
     cartState,
   } = useAddToCart(productDetails.product);
-
+  console.log("productDetails.product :  ",productDetails.product)
+    console.log("productDetails?.product?.quantityInStock :  ",productDetails?.product?.quantityInStock)
+    console.log("productDetails?.product?.discount : ",productDetails?.product?.discount)
   return (
     <section className="products-info-section">
       {/* LOADING_ERROR_HANDLING */}
@@ -96,12 +98,12 @@ const ProductInfoSection = () => {
                     ) : isMutation?.loading || userWishList?.loading ? (
                       <Spinner size={"sm"} />
                     ) : userWishList?.wishlist?.findIndex(
-                        (item) => item._id === productDetails?.product?._id
+                        (item) => item._id === productDetails?.product?.id
                       ) === -1 ? (
                       <AiOutlineHeart
                         size={30}
                         onClick={() =>
-                          handleAddToWishlist(productDetails?.product?._id)
+                          handleAddToWishlist(productDetails?.product?.id)
                         }
                       />
                     ) : (
@@ -109,7 +111,7 @@ const ProductInfoSection = () => {
                         size={30}
                         color={"red"}
                         onClick={() =>
-                          handleRemoveFromWishlist(productDetails?.product?._id)
+                          handleRemoveFromWishlist(productDetails?.product?.id)
                         }
                       />
                     )}
@@ -120,7 +122,7 @@ const ProductInfoSection = () => {
                   <p className="id-container m-0">
                     Id -{" "}
                     <span className="text-muted">
-                      {productDetails?.product?._id}
+                      {productDetails?.product?.id}
                     </span>
                   </p>
                 </ListGroupItem>
@@ -130,7 +132,7 @@ const ProductInfoSection = () => {
                     <span>
                       CATEGORY -{" "}
                       <Badge color="info" className="p-1 rounded">
-                        {productDetails?.product?.category?.name}
+                        {productDetails?.product?.categoryResponseDTO?.name}
                       </Badge>
                     </span>
 
@@ -189,7 +191,7 @@ const ProductInfoSection = () => {
                 </ListGroupItem>
 
                 {/* Colors  */}
-                {productDetails?.product &&
+                {/* {productDetails?.product &&
                   productDetails?.product?.colors.length > 0 && (
                     <ListGroupItem>
                       <div className="color-list-container">
@@ -222,10 +224,10 @@ const ProductInfoSection = () => {
                         </ul>
                       </div>
                     </ListGroupItem>
-                  )}
+                  )} */}
 
                 {/* Sizes  */}
-                {productDetails?.product &&
+                {/* {productDetails?.product &&
                   productDetails?.product?.size.length > 0 && (
                     <ListGroupItem>
                       <div className="size-list-container">
@@ -253,7 +255,7 @@ const ProductInfoSection = () => {
                         </ul>
                       </div>
                     </ListGroupItem>
-                  )}
+                  )} */}
 
                 {/* Qty - Add To Cart  */}
                 <ListGroupItem>

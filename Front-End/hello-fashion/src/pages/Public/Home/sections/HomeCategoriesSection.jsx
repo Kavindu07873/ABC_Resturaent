@@ -7,6 +7,8 @@ import useGetCategories from "../../../../common/hooks/categories/useGetCategori
 
 const HomeCategoriesSection = () => {
   const {allCategories} = useGetCategories();
+  console.log("allCategories loading: ", allCategories?.loading);
+  console.log("Categories: ", categories);
 
   return (
     <section className="categories-section">
@@ -24,6 +26,9 @@ const HomeCategoriesSection = () => {
                     <ImageLoader
                       image={item?.image}
                       style={{width: "100%", height: "auto"}}
+                      name={item?.name}
+                      description ={item?.description}
+                      id= {item?.id}
                     />
                   </Link>
                 </Col>

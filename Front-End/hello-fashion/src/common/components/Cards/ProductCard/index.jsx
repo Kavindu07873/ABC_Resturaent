@@ -14,8 +14,10 @@ const ProductCard = ({
     discount,
     quantityInStock,
     _id,
+    description
   },
 }) => {
+
   return (
     <LinkContainer
       to={`/products/${_id}`}
@@ -42,6 +44,9 @@ const ProductCard = ({
               maxWidth: "100%",
               objectFit: "contain",
             }}
+            name={name}
+            description={description}
+            _id= {_id}
           />
         </div>
 

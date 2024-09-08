@@ -86,6 +86,8 @@ export const getProductDetails = createAsyncThunk(
   "products/getProductDetails",
   async (productId, {rejectWithValue}) => {
     try {
+      console.log("productId  : ",productId)
+      productId =1 ;
       const res = await useGetData(`/products/${productId}`);
       return res;
     } catch (error) {
@@ -101,6 +103,7 @@ export const getProductDetails = createAsyncThunk(
     }
   }
 );
+
 //_____________________GET_ALL_PRODUCTS_____________________//
 export const getAllProducts = createAsyncThunk(
   "products/getAllProducts",

@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class FileService {
-    //    String baseDirectory = "C:\\opt\\tomcat\\webapps\\resources\\attachment";
+    private static final Logger logger = LoggerFactory.getLogger(FileService.class);
+
     @Value("${fileUploadUrl}")
     private String baseDirectory;
 
@@ -18,30 +22,27 @@ public class FileService {
 
     public String saveMultipartFile(MultipartFile file, String type) {
         try {
+            // Ensure type is valid and use it to determine the directory
+            String fileUploadDir = getFileUploadDirectory(type);
+            String fileDownloadDir = getFileDownloadDirectory(type);
 
+            // Generate unique file name
             UUID uuid = UUID.randomUUID();
             String extension = getFileExtension(file);
-            String fileName = uuid + "." + extension;
-
-            // Determine the file upload and download directories based on the file type.
-            String fileUploadDir = getFileUploadDirectory(type); // Update to fetch the correct directory based on type
-            String fileDownloadDir = getFileDownloadDirectory(type); // Update to fetch the correct directory based on type
-
+            String fileName = uuid + (extension.isEmpty() ? "" : "." + extension);
             String filePath = fileUploadDir + File.separator + fileName;
 
+            // Create file object and ensure parent directories exist
             File serverFile = new File(filePath);
-
-            // Ensure that the parent directories exist.
             serverFile.getParentFile().mkdirs();
 
-            // Save the file.
+            // Save file
             file.transferTo(serverFile);
 
-            String fileUrl = fileDownloadDir + File.separator + fileName;
-            return fileUrl;
-        } catch (Exception e) {
-            // Handle exceptions here.
-            e.printStackTrace();
+            // Generate file URL
+            return fileDownloadDir + "/" + fileName;
+        } catch (IOException e) {
+            logger.error("Error saving file: {}", e.getMessage(), e);
             return null;
         }
     }
@@ -58,16 +59,12 @@ public class FileService {
     }
 
     private String getFileUploadDirectory(String type) {
-        // Implement logic to fetch the upload directory based on the file type.
-        // For example, you can use a switch or if-else statement.
-        // Example: If type is "pdf," return the PDF upload directory.
-        // Update this to fetch the correct directory based on your application's logic.
+        // Implement your logic to determine upload directory based on type
         return baseDirectory;
     }
 
     private String getFileDownloadDirectory(String type) {
-        // Implement logic to fetch the download directory based on the file type.
-        // Similar to the upload directory, you need to fetch the correct directory based on the type.
+        // Implement your logic to determine download directory based on type
         return fileDownloadUrl;
     }
 }

@@ -5,6 +5,7 @@ import ABC_Restaurant.example.ABC_Restaurant.enums.UserStatus;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,4 +25,7 @@ public class CategoryEntity {
     @Column(length = 255, nullable = false)
     private String image;
 
+
+    @OneToMany(mappedBy = "categoryEntity", cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    private List<ProductEntity> productEntityList;
 }

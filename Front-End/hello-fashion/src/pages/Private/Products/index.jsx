@@ -102,7 +102,7 @@ const Products = () => {
                         />
                       </td>
                       <td style={{fontSize: "13px", fontStyle: "italic"}}>
-                        {item.name.toUpperCase()}
+                      {item.name ? item.name.toUpperCase() : 'N/A'}
                       </td>
                       <td style={{fontSize: "13px", color: "red"}}>
                         Rs. {item.price}

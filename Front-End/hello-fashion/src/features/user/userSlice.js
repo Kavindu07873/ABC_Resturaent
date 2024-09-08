@@ -79,9 +79,6 @@ export const userSlice = createSlice({
       .addCase(getUserProfile.fulfilled, (state, action) => {
         state.userProfile.loading = false;
         state.userProfile.error = false;
-        console.log("----------------------------------------")
-        console.log("action.payload {} ",action.payload)
-        console.log("----------------------------------------")
         state.userProfile.user = action.payload.body;
       })
       .addCase(getUserProfile.rejected, (state, action) => {
@@ -117,9 +114,6 @@ export const userSlice = createSlice({
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.allUsers.loading = false;
         state.allUsers.error = false;
-        console.log("----------=============------------------------------")
-        console.log("action.payload {} ",action.payload)
-        console.log("-------------=======================---------------------------")
         state.allUsers.users = action.payload.data.docs;
         state.allUsers.results = action.payload.results;
         state.allUsers.totalNumOfDocs = action.payload.totalNumOfDocs;

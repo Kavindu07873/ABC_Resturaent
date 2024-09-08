@@ -24,6 +24,9 @@ const initialState = {
   allProducts: {products: []},
   categoryProducts: {products: []},
 };
+// console.log("categoryProducts  : ",getCategoryProducts)
+
+// console.log("getProductDetails  : ",getProductDetails)
 
 export const productsSlice = createSlice({
   name: "products",
@@ -32,6 +35,15 @@ export const productsSlice = createSlice({
     resetMutationResult: (state) => {
       state.isMutation.success = false;
     },
+
+    addCategoryProductsToProductDetails(state) {
+      // Add categoryProducts to productDetails
+      state.productDetails = {
+        ...state.productDetails,
+        categoryProducts: state.categoryProducts.products,
+      };
+    },
+
   },
   extraReducers: (builder) => {
     builder
@@ -94,7 +106,11 @@ export const productsSlice = createSlice({
       .addCase(getProductDetails.fulfilled, (state, action) => {
         state.productDetails.loading = false;
         state.productDetails.error = false;
-        state.productDetails.product = action.payload.data.doc;
+        console.log("++++++++++++++++++++++++++++++++++++++")
+        console.log("action.payload.data.doc : ",action.payload.body)
+        console.log("++++++++++++++++++++++++++++++++++++++")
+        state.productDetails.product = action.payload.body;
+        
       })
       .addCase(getProductDetails.rejected, (state, action) => {
         state.productDetails.loading = false;
@@ -107,11 +123,12 @@ export const productsSlice = createSlice({
       .addCase(getAllProducts.fulfilled, (state, action) => {
         state.allProducts.loading = false;
         state.allProducts.error = false;
-        state.allProducts.products = action.payload.data.docs;
+        state.allProducts.products = action.payload.body.content;
+        state.allProducts.results = action.payload.body.content;
         state.allProducts.results = action.payload.results;
         state.allProducts.totalNumOfDocs = action.payload.totalNumOfDocs;
         state.allProducts.paginationStatus = action.payload.paginationStatus;
-      })
+            })
       .addCase(getAllProducts.rejected, (state, action) => {
         state.allProducts.loading = false;
         state.allProducts.error = action.payload;
@@ -123,12 +140,13 @@ export const productsSlice = createSlice({
       .addCase(getCategoryProducts.fulfilled, (state, action) => {
         state.categoryProducts.loading = false;
         state.categoryProducts.error = false;
-        state.categoryProducts.products = action.payload.data.docs;
+        state.categoryProducts.products = action.payload.body;
       })
       .addCase(getCategoryProducts.rejected, (state, action) => {
         state.categoryProducts.loading = false;
         state.categoryProducts.error = action.payload;
       })
+
       //_____________________CREATE_PRODUCT______________________//
       .addCase(createProduct.pending, (state) => {
         state.isMutation.loading = true;

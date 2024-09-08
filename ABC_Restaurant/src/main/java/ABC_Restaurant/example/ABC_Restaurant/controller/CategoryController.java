@@ -2,16 +2,16 @@ package ABC_Restaurant.example.ABC_Restaurant.controller;
 
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.CategoryRequestDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CategoryResponseDTO;
-import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CustomerResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.common.CommonResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.service.CategoryService;
-import ABC_Restaurant.example.ABC_Restaurant.service.CustomerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -34,10 +34,23 @@ public class CategoryController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findAllCustomer(@RequestParam int page,
-                                             @RequestParam int size) {
-        Page<CategoryResponseDTO> customerResonseDTOPage = categoryService.loadAllCategory(page, size);
-        return new ResponseEntity<>(new CommonResponseDTO(true, customerResonseDTOPage), HttpStatus.OK);
+    public ResponseEntity<?> findAllCategory(@RequestParam(defaultValue = "0", required = false) int page,
+                                             @RequestParam(defaultValue = "0", required = false) int size) {
+        if (page != 0) {
+            page = page - 1;
+        }
+        if (size != 0) {
+            Page<CategoryResponseDTO> categoryResponseDTOS = categoryService.loadAllCategory(page, size);
+            return new ResponseEntity<>(new CommonResponseDTO(true, categoryResponseDTOS), HttpStatus.OK);
+        } else {
+            List<CategoryResponseDTO> categoryResponseDTOS = categoryService.loadAllCategoryList();
+            return new ResponseEntity<>(new CommonResponseDTO(true, categoryResponseDTOS), HttpStatus.OK);
+        }
     }
 
+    @GetMapping(value = "/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findCategoryByID(@PathVariable(required = false) long categoryId) {
+        CategoryResponseDTO categoryResponseDTO = categoryService.findCategoryId(categoryId);
+        return new ResponseEntity<>(new CommonResponseDTO(true, categoryResponseDTO), HttpStatus.OK);
+    }
 }

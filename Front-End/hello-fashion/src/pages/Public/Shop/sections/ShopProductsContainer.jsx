@@ -4,12 +4,13 @@ import ProductCard from "../../../../common/components/Cards/ProductCard";
 import Pagination from "../../../../common/components/Shared/Pagination";
 
 const ShopProductsContainer = ({allProducts, limit, handlePagination}) => {
+  console.log("allProducts?.products.length  : ",allProducts)
   return (
     <>
       {allProducts.products.length > 0 ? (
         <Row xl={4} lg={3} xs={2}>
           {allProducts?.products.map((item) => (
-            <Col key={item._id} className="my-3">
+            <Col key={item.id} className="my-3">
               <ProductCard item={item} />
             </Col>
           ))}
