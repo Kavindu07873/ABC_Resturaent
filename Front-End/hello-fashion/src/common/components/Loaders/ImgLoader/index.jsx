@@ -6,10 +6,10 @@ const ImageLoader = ({image, style, name ,description , _id}) => {
   const handleImageLoaded = () => {
     setIsImgLoaded(true);
   };
-  // console.log("Image : ",image)
-  // console.log("name : ",name)
-  // console.log("description : ",description)
-  // console.log("id : ",_id)
+  console.log("Image : ",image)
+  console.log("name : ",name)
+  console.log("description : ",description)
+  console.log("id : ",_id)
   image = "https://www.allrecipes.com/thmb/2rPJp4sRMmSa-5MgBRuHz8XDxlc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/233446-lo-mein-noodles-dmfs-2x1-1356-1490-62771eb9cd6840fdb75f332303fff7b1.jpg"
  
   return (
