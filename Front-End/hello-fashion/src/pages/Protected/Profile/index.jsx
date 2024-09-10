@@ -31,8 +31,8 @@ const Profile = () => {
   //INPUTS_STATE
   //1)INFO[username-email-image]
   const [username, setUsername] = useState(userProfile?.user?.username);
-  const [email, setEmail] = useState(userProfile?.user?.email);
-  const [image, setImage] = useState(null);
+  const [email, setEmail] = useState(userProfile?.user?.email );
+  const [image, setImage] = useState(userProfile?.user?.image || "https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png");
   const handleChangeUsername = (e) => {
     setUsername(e.target.value);
   };
@@ -66,7 +66,8 @@ const Profile = () => {
     e.preventDefault();
     dispatch(updateUserPassword(values));
   };
-
+  // setImage  == "https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png";
+  console.log("userProfile?.user?.image  : ",userProfile?.user?.image)
   return (
     <>
       <PageHelmet title={"Profile"} />
@@ -87,7 +88,7 @@ const Profile = () => {
           >
             {/* box-shadow: ; box-shadow: ;*/}
             <img
-              src={userProfile?.user?.image}
+              src={image}
               alt="user-img"
               width={100}
               height={100}

@@ -21,11 +21,8 @@ const Footer = () => {
             {/* FooterInfo */}
             <Container>
                 <Row>
-                    <Col lg={6}>
-                        <img src={logo} alt="logo" />
-                        <p className="my-3">
-                            Unlock Your Style with HELLO Fashion! 👕
-                        </p>
+                    <Col lg={6}> 
+         
                         <div className="d-flex align-items-center">
                             {[
                                 {Icon: FaFacebookF, bgColor: "#3b5998"},

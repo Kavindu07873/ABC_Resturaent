@@ -3,6 +3,7 @@ package ABC_Restaurant.example.ABC_Restaurant.controller;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.AddNewUserRequestDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.RegisterRequest;
 import ABC_Restaurant.example.ABC_Restaurant.dto.Response.CustomerResponseDTO;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Response.UserResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.common.CommonResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.service.UserService;
@@ -32,7 +33,7 @@ public class UserController {
     public ResponseEntity registerNewUser(@RequestBody RegisterRequest registerRequest) {
         System.out.println("Test 1");
         userService.saveNewUser(registerRequest);
-        return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Customer Succefully Register"), HttpStatus.OK);
     }
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +57,7 @@ public class UserController {
     @GetMapping(value = "/my-profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity findAllUser() {
         System.out.println("my profile");
-        UserEntity userEntity = userService.findProfile();
-        return new ResponseEntity<>(new CommonResponseDTO(true,userEntity ), HttpStatus.OK);
+        UserResponseDTO userResponseDTO = userService.findProfile();
+        return new ResponseEntity<>(new CommonResponseDTO(true,userResponseDTO ), HttpStatus.OK);
     }
 }

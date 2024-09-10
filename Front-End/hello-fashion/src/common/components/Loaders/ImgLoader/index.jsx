@@ -15,12 +15,14 @@ const ImageLoader = ({image, style, name ,description , _id}) => {
   return (
     <>
       {!isImgLoaded && <BlockLoader />}
+      <div>
       <img
         src={image}
         alt="item-img"
         style={{ display: !isImgLoaded ? "none" : "inline", ...style }}
         onLoad={handleImageLoaded}
       />
+      </div>
       <h5 class="my-3" >{name}</h5>
       <h5 style={{ height: '24px', fontSize: '10px' }}>{description}</h5>
     </>

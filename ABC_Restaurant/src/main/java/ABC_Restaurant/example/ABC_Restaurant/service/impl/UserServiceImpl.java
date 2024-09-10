@@ -1,6 +1,7 @@
 package ABC_Restaurant.example.ABC_Restaurant.service.impl;
 
 import ABC_Restaurant.example.ABC_Restaurant.dto.Request.RegisterRequest;
+import ABC_Restaurant.example.ABC_Restaurant.dto.Response.UserResponseDTO;
 import ABC_Restaurant.example.ABC_Restaurant.dto.UserDTO;
 import ABC_Restaurant.example.ABC_Restaurant.entity.UserEntity;
 import ABC_Restaurant.example.ABC_Restaurant.enums.UserRole;
@@ -127,10 +128,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findProfile() {
+    public UserResponseDTO findProfile() {
         System.out.println("findProfile");
         try {
-            return accessTokenValidator.retrieveUserInformationFromAuthentication();
+            UserEntity userEntity = accessTokenValidator.retrieveUserInformationFromAuthentication();
+            UserResponseDTO userResponseDTO = modelMapper.map(userEntity, UserResponseDTO.class);
+            return userResponseDTO;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;

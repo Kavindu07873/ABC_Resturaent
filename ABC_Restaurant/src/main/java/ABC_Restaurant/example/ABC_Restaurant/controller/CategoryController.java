@@ -30,7 +30,7 @@ public class CategoryController {
     public ResponseEntity createNewCategory(@ModelAttribute CategoryRequestDTO categoryRequestDTO) {
         System.out.println("Test 1");
         categoryService.saveNewCategory(categoryRequestDTO);
-        return new ResponseEntity<>(new CommonResponseDTO(true, "You can proceed normal sign up process"), HttpStatus.OK);
+        return new ResponseEntity<>(new CommonResponseDTO(true, "Successfully Saved Category"), HttpStatus.OK);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
